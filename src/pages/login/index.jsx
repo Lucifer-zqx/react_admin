@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Icon, Input, Button} from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 // import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import './index.less'
 //react 导入图片的格式
@@ -51,6 +51,18 @@ class Login extends React.Component {
         });
     };
 
+    validate = (rule, value, callback)=>{
+        if(value.length < 4){
+            callback('密码长度不能小于4')
+        }else if(value.length > 12){
+            callback('密码长度不能大于12')
+        }else if(!/^[A-z0-9_]+$/.test(value)){
+            callback('密码只能为数字字母下划线的组合')
+        }else{
+            callback()
+        }
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
@@ -64,7 +76,11 @@ class Login extends React.Component {
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <Form.Item>
                             {getFieldDecorator('username', {
-                                rules: [{ required: true, message: 'Please input your username!' }],
+                                rules: [
+                                { required: true, message: '请输入您的用户名' },
+                                { min: 4, message: '用户名最小长度为4个字符' },
+                                { max: 12, message: '用户名最大长度为12个字符' },
+                                { RegExp: /^[\w]+$/, message: '用户名为字母、数字或下划线组成' }],
                             })(
                                 <Input
                                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -74,7 +90,7 @@ class Login extends React.Component {
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
-                                rules: [{ required: true, message: 'Please input your Password!' }],
+                                rules: [{ validator: this.validate }],
                             })(
                                 <Input
                                     prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
