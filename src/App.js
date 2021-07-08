@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import 'antd/dist/antd.less'
-import Home from './pages/home'
+import Admin from './pages/admin'
 import Login from './pages/login'
 
 export default class App extends Component {
@@ -9,7 +9,7 @@ export default class App extends Component {
         return (
             <Switch>
                 <Route path="/login" component={Login} />
-                <Route path="/" component={Home} />               
+                <Route path="/" component={Admin} />               
             </Switch>
         )
     }

@@ -6,7 +6,7 @@ import { reqLogin } from "../../api/ajax"
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 //react 导入图片的格式
-import logo from './img/logo.png'
+import logo from '../../assets/imgs/logo.png'
 
 class Login extends React.Component {
 

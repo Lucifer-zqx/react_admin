@@ -1,6 +1,7 @@
 import store from 'store'
 const USER_KEY ='user_key'
-export default {
+
+const storageUtils = {
     saveUser(user){
         // localStorage.setItem(USER_KEY,JSON.stringify(user))
         store.set(USER_KEY,user)
@@ -14,3 +15,5 @@ export default {
         store.remove(USER_KEY)
     }
 }
+
+export default storageUtils
