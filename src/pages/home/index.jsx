@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-
+import memoryUtils from '../../utils/memoryUtils'
 export default class Home extends Component {
     render() {
         return (
             <div>
-                home..
+                hello  {memoryUtils.user.username} 
             </div>
         )
     }
