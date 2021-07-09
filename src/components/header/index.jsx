@@ -23,34 +23,37 @@ class ContentHeader extends Component {
         }
     }
 
-    getTitle = ()=>{
-        let title 
+    getTitle = () => {
+        let title
         const pathname = this.props.location.pathname
-        menuConfig.forEach(Item =>{
-            if(Item.key === pathname){
+        menuConfig.forEach(Item => {
+            if (Item.key === pathname) {
                 title = Item.title
-            }else if(Item.children){
-                const cItem = Item.children.find(cItem => cItem.key === pathname)
-                console.log(cItem)
-                title = cItem.title
+            } else if (Item.children) {
+                const cItem = Item.children.find(item => item.key === pathname)
+                //坑：这里加判断的原因：map的回调函数都是异步执行的
+                //如果直接title=cItem.title,此时title为undefined，就会爆错
+                if (cItem) {
+                    title = cItem.title
+                }
             }
-
         })
         return title
+
     }
 
 
     //退出
     logout = () => {
         Modal.confirm({
-           
+
             content: '确认退出吗？',
-            onOk : () => {
+            onOk: () => {
                 storageUtils.deleteUser()
                 memoryUtils.user = {}
                 this.props.history.replace('/login')
             }
-            
+
         })
     }
 
@@ -59,10 +62,10 @@ class ContentHeader extends Component {
             this.setState({ currentTime: tansformDate(Date.now()) })
         }, 1000)
         this.getWeather()
-       
+
     }
-    
-    componentWillUnmount(){
+
+    componentWillUnmount() {
         clearInterval(this.Timer)
     }
 
@@ -76,7 +79,7 @@ class ContentHeader extends Component {
                 </div>
                 <div className="content-header-bottom">
                     <div className="content-header-bottom-left">
-                        <span>{this.title}</span>
+                        <span>{title}</span>
                     </div>
                     <div className="content-header-bottom-right">
                         <span>{this.state.currentTime}</span>
