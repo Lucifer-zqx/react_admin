@@ -25,6 +25,15 @@ export const reqWeather = city => {
     })
 }
 
+//查询分类列表
+export  const reqCategorys = parentId => ajax('/manage/category/list',{parentId})
+
+//添加分类列表
+export const reqAddCategory = (parentId,categoryName) => ajax('/manage/category/add',{parentId,categoryName},'POST')
+
+//更新分类列表
+export const reqUpdateCategory = ({parentId,categoryName}) => ajax('/manage/category/update',{parentId,categoryName},'POST')
+
 
 
 
