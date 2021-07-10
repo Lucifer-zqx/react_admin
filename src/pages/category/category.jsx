@@ -41,7 +41,6 @@ export default class Category extends Component {
         查询分类数据：一级列表/二级子列表
     */
     getCategorys = async (parentId) => {
-        debugger
         this.setState({ loading: true })
         parentId = parentId || this.state.parentId
         const result = await reqCategorys(parentId)
@@ -84,9 +83,9 @@ export default class Category extends Component {
      * 回到一级列表
      */
     returnFirstPage = () => {
-        this.setState({ parentId: '0' ,parentName:''}
-        //解决在二级列表下添加一级列表，返回后不生效的问题
-        // ,()=>{this.getCategorys()}
+        this.setState({ parentId: '0', parentName: '' }
+            //解决在二级列表下添加一级列表，返回后不生效的问题
+            // ,()=>{this.getCategorys()}
         )
     }
 
@@ -94,7 +93,7 @@ export default class Category extends Component {
      * 关闭两个模态框
      */
     handleCancel = () => {
-         //清除输入数据
+        //清除输入数据
         this.form.resetFields()
         this.setState({ visible: 0 })
     }
@@ -117,46 +116,57 @@ export default class Category extends Component {
     /**
      * 点击确定后的回调事件
      */
-    handleOk = async (type) => {
+    handleOk =  (type) => {
         if (type === 'add') {
-             //1.发送请求
-             const{parentId,categoryName} = this.form.getFieldsValue()
-             this.form.resetFields()
-             const result  = await reqAddCategory(parentId,categoryName)
-             if(result.status === 0){
-                 //2.更新数据
-                 //如果当前页面与要添加的页面不同，不更新parentId
-                 if(parentId === this.state.parentId){
-                    this.getCategorys()
-                 }else if(parentId === '0'){
-                     //解决在二级子列表下添加一级列表，返回后不生效的问题
-                     //通过提前取得一级列表的内容，这样返回设置状态的异步问题就可以避免
-                     this.getCategorys('0')
-                 } 
-                 //方法2，通过setState设置回调完成
-                //  this.getCategorys()
-                
-                //3.关闭模态框
-                this.setState({ visible: 0 })
-             }
-           
+            //提交时校验表单
+            this.form.validateFields(async(err, values) => {
+                if (!err) {
+                    //1.发送请求
+                    const { parentId, categoryName } = values
+                    this.form.resetFields()
+                    const result = await reqAddCategory(parentId, categoryName)
+                    if (result.status === 0) {
+                        //2.更新数据
+                        //如果当前页面与要添加的页面不同，不更新parentId
+                        if (parentId === this.state.parentId) {
+                            this.getCategorys()
+                        } else if (parentId === '0') {
+                            //解决在二级子列表下添加一级列表，返回后不生效的问题
+                            //通过提前取得一级列表的内容，这样返回设置状态的异步问题就可以避免
+                            this.getCategorys('0')
+                        }
+                        //方法2，通过setState设置回调完成
+                        //  this.getCategorys()
+
+                        //3.关闭模态框
+                        this.setState({ visible: 0 })
+                    }
+                }
+            })
+
+
         } else if (type === 'update') {
-            //1.发送请求
-            const categoryId = this.category._id
-            //一个重要知识点：子组件传递给父组件属性或方法，
-            //通过父组件给其props传递一个方法，在子组件中调用这方法，来完成拿到子组件的一些属性或方法
-            const categoryName = this.form.getFieldValue("categoryName")
-
-            //清除输入数据
-            this.form.resetFields()
-            const result = await reqUpdateCategory({ categoryId, categoryName })
-
-            if (result.status === 0) {
-                //2.更新数据
-                this.getCategorys()
-                //3.关闭模态框
-                this.setState({ visible: 0 })
-            }
+             //提交时校验表单
+            this.form.validateFields(async(err, values) => {
+                if(!err){
+                    //1.发送请求
+                    const categoryId = this.category._id
+                    //一个重要知识点：子组件传递给父组件属性或方法，
+                    //通过父组件给其props传递一个方法，在子组件中调用这方法，来完成拿到子组件的一些属性或方法
+                    const categoryName = values
+        
+                    //清除输入数据
+                    this.form.resetFields()
+                    const result = await reqUpdateCategory({ categoryId, categoryName })
+        
+                    if (result.status === 0) {
+                        //2.更新数据
+                        this.getCategorys()
+                        //3.关闭模态框
+                        this.setState({ visible: 0 })
+                    }
+                }
+            })
 
         }
     }
@@ -201,7 +211,7 @@ export default class Category extends Component {
                     onOk={() => this.handleOk('add')}
                     onCancel={this.handleCancel}
                 >
-                    <AddForm parentId={parentId} categorys={categorys} rendFunc={(form) => this.form = form}/>
+                    <AddForm parentId={parentId} categorys={categorys} rendFunc={(form) => this.form = form} />
                 </Modal>
 
 

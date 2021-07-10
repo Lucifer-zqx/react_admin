@@ -21,7 +21,10 @@ class UpdateForm extends Component {
             <Form>
                 <Item>
                     {getFieldDecorator('categoryName',{
-                        initialValue:this.props.categoryName
+                        initialValue:this.props.categoryName,
+                        rules:[
+                            { required: true,message:"请输入修改后的分类"}
+                        ]
                     })(
                         <Input placeholder="请输入修改后的分类" />
                     )}
