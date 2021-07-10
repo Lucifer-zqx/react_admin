@@ -9,10 +9,14 @@ class UpdateForm extends Component {
         categoryName:PropTypes.string.isRequired,
         rendFunc:PropTypes.func.isRequired
     }
+
+    UNSAFE_componentWillMount(){
+        this.props.rendFunc(this.props.form)
+    }
+
     
     render() {
-        const { getFieldDecorator } = this.props.form
-        this.props.rendFunc(this.props.form)
+        const { getFieldDecorator } = this.props.form       
         return (
             <Form>
                 <Item>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Button, Table, Icon, Modal, message } from 'antd'
 import LinkButton from "../../components/link-button"
 import UpdateForm from './update-form'
+import AddForm from './add-form'
 import { reqCategorys, reqUpdateCategory, reqAddCategory } from '../../api/ajax'
 
 export default class Category extends Component {
@@ -39,9 +40,10 @@ export default class Category extends Component {
     /*
         查询分类数据：一级列表/二级子列表
     */
-    getCategorys = async () => {
+    getCategorys = async (parentId) => {
+        debugger
         this.setState({ loading: true })
-        const { parentId } = this.state
+        parentId = parentId || this.state.parentId
         const result = await reqCategorys(parentId)
         this.setState({ loading: false })
         if (result.status === 0) {
@@ -82,7 +84,10 @@ export default class Category extends Component {
      * 回到一级列表
      */
     returnFirstPage = () => {
-        this.setState({ parentId: '0' })
+        this.setState({ parentId: '0' ,parentName:''}
+        //解决在二级列表下添加一级列表，返回后不生效的问题
+        // ,()=>{this.getCategorys()}
+        )
     }
 
     /**
@@ -114,7 +119,27 @@ export default class Category extends Component {
      */
     handleOk = async (type) => {
         if (type === 'add') {
-            console.log("11111")
+             //1.发送请求
+             const{parentId,categoryName} = this.form.getFieldsValue()
+             this.form.resetFields()
+             const result  = await reqAddCategory(parentId,categoryName)
+             if(result.status === 0){
+                 //2.更新数据
+                 //如果当前页面与要添加的页面不同，不更新parentId
+                 if(parentId === this.state.parentId){
+                    this.getCategorys()
+                 }else if(parentId === '0'){
+                     //解决在二级子列表下添加一级列表，返回后不生效的问题
+                     //通过提前取得一级列表的内容，这样返回设置状态的异步问题就可以避免
+                     this.getCategorys('0')
+                 } 
+                 //方法2，通过setState设置回调完成
+                //  this.getCategorys()
+                
+                //3.关闭模态框
+                this.setState({ visible: 0 })
+             }
+           
         } else if (type === 'update') {
             //1.发送请求
             const categoryId = this.category._id
@@ -176,7 +201,7 @@ export default class Category extends Component {
                     onOk={() => this.handleOk('add')}
                     onCancel={this.handleCancel}
                 >
-                    <p>添加的模态框</p>
+                    <AddForm parentId={parentId} categorys={categorys} rendFunc={(form) => this.form = form}/>
                 </Modal>
 
 
