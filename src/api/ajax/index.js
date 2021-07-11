@@ -26,15 +26,25 @@ export const reqWeather = city => {
 }
 
 //查询分类列表
-export  const reqCategorys = parentId => ajax('/manage/category/list',{parentId})
+export const reqCategorys = parentId => ajax('/manage/category/list', { parentId })
 
 //添加分类列表
-export const reqAddCategory = (parentId,categoryName) => ajax('/manage/category/add',{parentId,categoryName},'POST')
+export const reqAddCategory = (parentId, categoryName) => ajax('/manage/category/add', { parentId, categoryName }, 'POST')
 
 //更新分类列表
-export const reqUpdateCategory = ({categoryId,categoryName}) => ajax('/manage/category/update',{categoryId,categoryName},'POST')
+export const reqUpdateCategory = ({ categoryId, categoryName }) => ajax('/manage/category/update', { categoryId, categoryName }, 'POST')
 
+//获取商品分页列表
+export const reqProducts = (pageNum, pageSize) => ajax('/manage/product/list', { pageNum, pageSize })
 
+//根据关键字查询分页列表
+export const reqProductsByKeyword = ({ pageNum, pageSize, searchType, productKeyword }) => ajax('/manage/product/search',
+    {
+        pageNum,
+        pageSize,
+        [searchType]:productKeyword
+    }
+)
 
 
 
