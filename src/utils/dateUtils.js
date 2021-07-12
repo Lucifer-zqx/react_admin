@@ -3,6 +3,6 @@
 export default function transformTime(day){
     if (!day) return ''
     let date = new Date(day)
-    return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDay()+4) + ' '
+    return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDate()) + ' '
     + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
 }

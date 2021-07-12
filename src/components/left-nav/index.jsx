@@ -26,7 +26,8 @@ class LeftNav extends Component {
 
                 )
             } else {
-                const cItem = item.children.find(cItem => cItem.key === path)
+                //解决子路由不匹配，菜单关闭的问题
+                const cItem = item.children.find(cItem => path.indexOf(cItem.key) === 0)
                 if(cItem){
                     this.openKey=item.key
                 }   
@@ -56,6 +57,10 @@ class LeftNav extends Component {
 
     render() {
         let path = this.props.location.pathname
+        //解决子路由不匹配，菜单关闭的问题
+        if(path.indexOf('/product') === 0){
+            path='/product'
+        }
         return (
             
             <div className='left-nav'>

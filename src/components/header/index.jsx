@@ -30,7 +30,7 @@ class ContentHeader extends Component {
             if (Item.key === pathname) {
                 title = Item.title
             } else if (Item.children) {
-                const cItem = Item.children.find(item => item.key === pathname)
+                const cItem = Item.children.find(item =>  pathname.indexOf(item.key ) === 0)
                 //坑：这里加判断的原因：map的回调函数都是异步执行的
                 //如果直接title=cItem.title,此时title为undefined，就会爆错
                 if (cItem) {
