@@ -55,8 +55,7 @@ class LeftNav extends Component {
     }
 
     render() {
-        const path = this.props.location.pathname
-        
+        let path = this.props.location.pathname
         return (
             
             <div className='left-nav'>

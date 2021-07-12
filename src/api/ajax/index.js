@@ -46,5 +46,10 @@ export const reqProductsByKeyword = ({ pageNum, pageSize, searchType, productKey
     }
 )
 
+//根据分类Id查询分类信息
+export const reqCategoryInfoById = (categoryId) => ajax("/manage/category/info",{categoryId})
 
+
+//更新商品的状态（上下架）
+export const reqUpdateStatus = (productId,status) => ajax('/manage/product/updateStatus',{productId,status},'POST')
 

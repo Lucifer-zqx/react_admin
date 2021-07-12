@@ -7,7 +7,7 @@ import {
     Input
 } from "antd"
 import LinkButton from '../../components/link-button'
-import { reqProducts, reqProductsByKeyword } from '../../api/ajax'
+import { reqProducts, reqProductsByKeyword ,reqUpdateStatus} from '../../api/ajax'
 import { PAGE_SIZE } from '../../utils/constant'
 
 const Option = Select.Option
@@ -42,11 +42,16 @@ export default class ProductHome extends Component {
             {
                 title: '状态',
                 width: 100,
-                dataIndex: 'status',
-                render: status =>
+                render: product =>
                     <span>
-                        <Button type="primary">下架</Button>
-                        <span>在售</span>
+                        <Button 
+                        type="primary" 
+                        onClick={()=>{
+                            reqUpdateStatus(product._id,product.status === 1?2:1)
+                            this.getProducts(this.pageNum)}}>
+                        {product.status === 1?'下架':'上架'}
+                        </Button>
+                        <span>{product.status === 1?'在售':'已下架'}</span>
                     </span>
 
             },
@@ -55,7 +60,8 @@ export default class ProductHome extends Component {
                 width: 100,
                 render: product =>
                     <span>
-                        <LinkButton>详情</LinkButton>
+                        {/* 调用history的push方法的第二个参数传递 */}
+                        <LinkButton onClick={()=> this.props.history.push('/product/detail',product)}>详情</LinkButton>
                         <LinkButton>修改</LinkButton>
                     </span>
 
@@ -70,6 +76,9 @@ export default class ProductHome extends Component {
         const {productKeyword,searchType,searchFlag} = this.state
         let result
         // 判断请求是哪种查询
+        //这里的searchflag是为了解决，虽然在关键词框输入了内容，但是并没有点击搜索，
+        //此时却不想按关键词搜索了，直接翻页，不会按照关键词搜索
+        this.pageNum = pageNum
         if(searchFlag === 1){
             //按关键字查询
             result = await reqProductsByKeyword({pageNum,pageSize,searchType,productKeyword})
