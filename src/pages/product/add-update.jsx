@@ -71,24 +71,39 @@ class AddUpdate extends Component {
         }
     }
 
-    initOptions = (reslut)=>{
-        const options = reslut.data.map(c => {
+    initOptions = async (options) => {
+        const newOptions = options.map(c => {
             return {
                 value: c._id,
                 label: c.name,
                 isLeaf: false
             }
         })
-        this.setState({ options })
+
+        const { updateFlag, product } = this
+        const { pCategoryId} = product || {}
+        if (updateFlag && pCategoryId !== '0') {
+            const subOptions = await reqCategorys(pCategoryId)
+            debugger
+            const newSubOptions = subOptions.data.map(c => ({
+                value: c._id,
+                label: c.name,
+                isLeaf: true
+            }))
+            const targrtOption = newOptions.find( c => c.value === pCategoryId)
+            targrtOption.children = newSubOptions
+        }
+        this.setState({ options: newOptions })
     }
     //获取分类列表
     getCategorys = async (parentId) => {
         const reslut = await reqCategorys(parentId)
         if (reslut.status === 0) {
+            const options = reslut.data
             if (parentId === '0') {
-                this.initOptions(reslut)
-            }else{
-
+                this.initOptions(options)
+            } else {
+                return options;
             }
         }
 
@@ -102,19 +117,7 @@ class AddUpdate extends Component {
 
     //组件挂载时
     async componentDidMount() {
-        const { updateFlag, product } = this
-        if (updateFlag && product.pCategoryId !== '0') {
-            const reslut = await reqCategorys(product.pCategoryId)
-            if (reslut.status === 0) {
-                const childrenOption = reslut.data.map(c => ({ value: c._id, label: c.name, isLeaf: true }))
-                const targetOption = this.state.options.find(c => c.value === product.pCategoryId)
-                // targetOption.children = childrenOption
-            }
-        } else {
-            this.getCategorys("0")
-        }
-
-
+        this.getCategorys('0')
     }
 
     render() {
