@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, List, Icon } from 'antd'
 import LinkButton from '../../components/link-button'
 import { reqCategoryInfoById } from "../../api/ajax"
+import {BASE_IMG_URL} from "../../utils/constant"
 const Item = List.Item
 export default class ProductDetail extends Component {
 
@@ -54,7 +55,7 @@ export default class ProductDetail extends Component {
                     <Item>
                         <div>
                             <span className="left">商品图片:</span>
-                            <span>{imgs}</span>
+                            <img className="detail-img"src={BASE_IMG_URL+imgs} alt="加载失败" />
                         </div>
                     </Item>
                     <Item>
