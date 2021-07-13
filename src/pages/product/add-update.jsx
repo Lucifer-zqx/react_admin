@@ -10,6 +10,7 @@ import {
 }
     from 'antd'
 import { reqCategorys } from '../../api/ajax'
+import PicturesWall from './picture-wall'
 
 import LinkButton from "../../components/link-button"
 const Item = Form.Item
@@ -81,16 +82,15 @@ class AddUpdate extends Component {
         })
 
         const { updateFlag, product } = this
-        const { pCategoryId} = product || {}
+        const { pCategoryId } = product || {}
         if (updateFlag && pCategoryId !== '0') {
             const subOptions = await reqCategorys(pCategoryId)
-            debugger
             const newSubOptions = subOptions.data.map(c => ({
                 value: c._id,
                 label: c.name,
                 isLeaf: true
             }))
-            const targrtOption = newOptions.find( c => c.value === pCategoryId)
+            const targrtOption = newOptions.find(c => c.value === pCategoryId)
             targrtOption.children = newSubOptions
         }
         this.setState({ options: newOptions })
@@ -144,7 +144,6 @@ class AddUpdate extends Component {
         //默认显示分类列表
         let categorys = []
         if (updateFlag) {
-            console.log(pCategoryId, categoryId)
             if (pCategoryId === '0') {
                 //一级分类列表
                 categorys.push(categoryId)
@@ -215,7 +214,14 @@ class AddUpdate extends Component {
 
                     </Item>
                     <Item label="商品图片" {...layout}>
-                        <span>商品图片</span>
+                        {getFieldDecorator('imgs',
+                            {
+                                initialValue: [],
+                            }
+                        )(
+                            <PicturesWall />
+                        )}
+
                     </Item>
                     <Item label="商品详情" {...layout}>
                         <span>商品详情</span>
