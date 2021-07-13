@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Upload, Icon, Modal } from 'antd';
-
+import { Upload, Icon, Modal, message } from 'antd';
+import { reqDeleteImg } from '../../api/ajax'
+import PropTypes from "prop-types"
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -11,17 +12,27 @@ function getBase64(file) {
 }
 
 export default class PicturesWall extends Component {
+
+    static propTypes ={
+        imgs:PropTypes.array
+    }
+
+    constructor(props){
+        super(props)
+        if(props.imgs &&　props.imgs.length>0){
+            this.state.fileList = props.imgs.map((c,index) => ({
+                uid:-index,
+                name:c,
+                status:'done',
+                url:"http://localhost:5000/upload/"+c
+            }))
+        }
+    }
+
     state = {
         previewVisible: false,
         previewImage: '',
-        fileList: [
-            /* {
-                uid: '-1', //上传图片id
-                name: 'image.png', //图片名称
-                status: 'done',  //上传状态
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png', //图片的url
-            } */
-        ],
+        fileList: [],
     };
 
     handleCancel = () => this.setState({ previewVisible: false });
@@ -37,15 +48,32 @@ export default class PicturesWall extends Component {
         });
     };
 
-    handleChange = ({ file, fileList }) => {
-        console.log('handleChange()',file.status, file, fileList)
-        if(file.status === 'done'){
-            // 修改fileList
-            const {name,url} = file.response.data
-            fileList.name = name
-            fileList.url = url
+    getImgs = () => {
+        return this.state.fileList.map(c => c.name)
+    }
+
+    handleChange = async ({ file, fileList }) => {
+        console.log(file.status)
+        if (file.status === 'done') {
+            // 修改fileList数组的最后一个元素
+            if (file.response.status === 0) {
+                message.success('上传图片成功')
+                const { name, url } = file.response.data
+                let listLength = fileList.length
+                fileList[listLength - 1].name = name
+                fileList[listLength - 1].url = url
+            }else{
+                message.success('上传图片失败')
+            }
+        } else if (file.status === 'removed') {
+            const result = await reqDeleteImg(file.name)
+            if (result.status === 0) {
+                message.success("删除图片成功")
+            } else {
+                message.error("删除图片失败")
+            }
         }
-        
+
         this.setState({ fileList })
     };
 

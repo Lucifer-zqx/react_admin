@@ -55,7 +55,8 @@ export default class ProductDetail extends Component {
                     <Item>
                         <div>
                             <span className="left">商品图片:</span>
-                            <img className="detail-img"src={BASE_IMG_URL+imgs} alt="加载失败" />
+                            {imgs.length !==0 ? <img className="detail-img"src={BASE_IMG_URL+imgs} alt="图片加载失败" />:<span>该商品没有图片信息</span>}
+                            
                         </div>
                     </Item>
                     <Item>

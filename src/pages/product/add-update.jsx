@@ -56,6 +56,8 @@ class AddUpdate extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 message.success("提交成功")
+                //父组件想获取到子组件的状态，可以通过ref调用子组件的方法，来返回子组件的状态数据
+                values.imgs = this.picNode.getImgs()
                 console.log(values)
             } else {
                 message.error("请检查表单内容")
@@ -124,7 +126,7 @@ class AddUpdate extends Component {
         //拿到是否是更新操作标识
         const { updateFlag } = this
         //拿到更新product传递过来的数据
-        const { name, desc, price, pCategoryId, categoryId } = this.product || {}
+        const { name, desc, price, pCategoryId, categoryId,imgs } = this.product || {}
         //card标题
         const title =
             <span>
@@ -219,7 +221,7 @@ class AddUpdate extends Component {
                                 initialValue: [],
                             }
                         )(
-                            <PicturesWall />
+                            <PicturesWall ref={ e => this.picNode = e} imgs={imgs}/>
                         )}
 
                     </Item>
