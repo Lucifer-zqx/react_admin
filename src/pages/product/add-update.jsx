@@ -9,8 +9,9 @@ import {
     Cascader
 }
     from 'antd'
-import { reqCategorys } from '../../api/ajax'
+import { reqAddOrUpdateProduct, reqCategorys } from '../../api/ajax'
 import PicturesWall from './picture-wall'
+import RichTextEditor from './rich-text-editor'
 
 import LinkButton from "../../components/link-button"
 const Item = Form.Item
@@ -53,12 +54,37 @@ class AddUpdate extends Component {
 
     //提交表单
     submit = () => {
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields(async (err, values) => {
             if (!err) {
-                message.success("提交成功")
                 //父组件想获取到子组件的状态，可以通过ref调用子组件的方法，来返回子组件的状态数据
                 values.imgs = this.picNode.getImgs()
-                console.log(values)
+                values.detail = this.detailNode.getHTMLText()
+                //收集表单数据
+                const { name, desc, price, detail, imgs, categorys } = values
+                const product = { name, desc, price, detail, imgs }
+                //取出两id，看是一级还是二级分类
+                if (categorys.length === 1) {
+                    product.pCategoryId = '0'
+                    product.categoryId = categorys[0]
+                } else {
+                    product.pCategoryId = categorys[0]
+                    product.categoryId = categorys[1]
+                }
+                
+                if (this.updateFlag) {
+                    //更新操作就需要加_id
+                    product._id = this.product._id
+                }
+
+                //发请求
+                const result = await reqAddOrUpdateProduct(product)
+                if (result.status === 0) {
+                    message.success((this.updateFlag ? '更新' : '添加') + "成功")
+                    this.props.history.goBack()
+                } else {
+                    message.error((this.updateFlag ? '更新' : '添加') + "失败")
+                }
+
             } else {
                 message.error("请检查表单内容")
             }
@@ -126,7 +152,7 @@ class AddUpdate extends Component {
         //拿到是否是更新操作标识
         const { updateFlag } = this
         //拿到更新product传递过来的数据
-        const { name, desc, price, pCategoryId, categoryId,imgs } = this.product || {}
+        const { name, desc, price, pCategoryId, categoryId, imgs, detail } = this.product || {}
         //card标题
         const title =
             <span>
@@ -221,12 +247,19 @@ class AddUpdate extends Component {
                                 initialValue: [],
                             }
                         )(
-                            <PicturesWall ref={ e => this.picNode = e} imgs={imgs}/>
+                            <PicturesWall ref={e => this.picNode = e} imgs={imgs} />
                         )}
 
                     </Item>
-                    <Item label="商品详情" {...layout}>
-                        <span>商品详情</span>
+                    <Item label="商品详情" labelCol={{ span: 2 }} wrapperCol={{ span: 20 }}>
+                        {getFieldDecorator('detail',
+                            {
+                                initialValue: '',
+                            }
+                        )(
+                            <RichTextEditor ref={e => this.detailNode = e} detail={detail} />
+                        )}
+
                     </Item>
 
                 </Form>
