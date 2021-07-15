@@ -64,3 +64,6 @@
     - antd的Tree组件的属性 onCheck 和 ChechedKeys
     - 父组件每次渲染时，都会重新给子组件传递props参数，但是子组件因为在第一次渲染时，就需要数据所以在ComponentWillMount钩子中将参数先拿到用了，但是当更新后，新的props父组件已经传递给了子组件，但是子组件却没有拿到，这个场景最适合这个钩子UNSAFE_componentWillMount（nextProps）{},第二次传递参数时调用。
 
+6. ### 用户管理
+    - jsx遍历对象成数组的方法：Oject.keys()得到对象属性名数组后，在map遍历
+    - ref对象什么时候可以拿到？只有在真实Dom渲染完成后    

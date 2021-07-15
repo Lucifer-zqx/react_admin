@@ -120,6 +120,8 @@ export default class User extends Component {
     }
 
     hideModal = () => {
+        //自己去拿form，这样就不依赖点击确认后靠this.form了
+        this.addUpdateNode.getForm().resetFields()
         this.setState({ visible: 0 })
     }
 
@@ -129,11 +131,13 @@ export default class User extends Component {
 
     componentDidMount() {
         this.getUsers()
+        console.log('父组件完成挂载')
     }
 
 
 
     render() {
+        console.log('父组件')
 
         const { users, visible } = this.state
         return (
