@@ -147,7 +147,7 @@ export default class Role extends Component {
                     rowKey="_id"
                     rowSelection={{
                         type: 'radio',
-                        selectedRowKeys: [role._id]
+                        selectedRowKeys: [role._id], //标志哪行被选中的属性
                     }}
                     onRow={this.onRow}
                     bordered

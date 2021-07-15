@@ -14,8 +14,6 @@ export default class ProductDetail extends Component {
 
     async componentDidMount() {
         const { categoryId, pCategoryId } = this.props.location.state
-        console.log(pCategoryId)
-        debugger
         if (pCategoryId !== '0') {
             const result = await Promise.all([reqCategoryInfoById(pCategoryId), reqCategoryInfoById(categoryId)])
             const pCategory = result[0].data.name
