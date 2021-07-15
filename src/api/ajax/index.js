@@ -8,8 +8,6 @@ import { message } from 'antd'
 //登录接口
 export const reqLogin = (username, password) => ajax('/login', { username, password }, 'POST')
 
-//添加用户接口
-export const reqAddUser = data => ajax('/manage/user/add', data, 'POST')
 
 //天气预报接口
 export const reqWeather = city => {
@@ -70,3 +68,18 @@ export const reqAddRole = ({roleName}) => ajax('/manage/role/add',{roleName},'PO
 
 //设置角色权限
 export const reqUpdateAuthority = (role) => ajax('/manage/role/update',role,'POST')
+
+
+//请求用户列表
+export const reqUsers  = ()=> ajax('/manage/user/list')
+
+//删除用户
+export const reqDeleteUser = userId => ajax('/manage/user/delete',{userId},"POST")
+
+//添加用户
+export const reqAddUser = user => ajax('/manage/user/add',user,'POST')
+
+
+//更新用户
+
+export const reqUpdateUser = user => ajax('/manage/user/update',user,'POST')
