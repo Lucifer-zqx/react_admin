@@ -13,12 +13,22 @@ import User from '../user/user'
 import Pie from "../charts/pie"
 import Line from "../charts/line"
 import Bar from "../charts/bar"
+import memoryUtils from '../../utils/memoryUtils'
+import storageUtils from '../../utils/storageUtils'
 
 const { Footer, Sider, Content } = Layout
 
 
 export default class Admin extends Component {
     render() {
+        
+        const storeUser = storageUtils.readUser()
+        if(storeUser._id){
+            memoryUtils.user=storeUser
+        }else{
+            this.props.history.replace('/login')
+            return
+        }
         return (
             <Layout style={{ minHeight: '100%' }}>
                 <Sider className="left-nav">
