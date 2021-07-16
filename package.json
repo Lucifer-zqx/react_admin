@@ -3,16 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.2.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "antd": "^4.16.6",
-    "craco-less": "^1.18.0",
+    "antd": "3.26.19",
+    "axios": "^0.21.1",
+    "craco": "^0.0.3",
+    "craco-antd": "^1.19.0",
+    "draftjs-to-html": "^0.9.1",
+    "jsonp": "^0.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-draft-wysiwyg": "^1.14.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "store": "^2.0.12",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -38,5 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }
