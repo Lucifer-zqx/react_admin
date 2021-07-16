@@ -62,7 +62,10 @@ export default class RichTextEditor extends Component {
 
     //收集html数据
     getHTMLText = () => {
-        return draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+        if (typeof this.state.editorState.getCurrentContent === 'function') {
+            return draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+        }
+
     }
 
     render() {

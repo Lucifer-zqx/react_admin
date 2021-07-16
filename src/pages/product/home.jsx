@@ -148,6 +148,7 @@ export default class ProductHome extends Component {
                     rowKey='_id'
                     pagination={
                         {
+                            current:this.pageNum,
                             total,
                             defaultPageSize: PAGE_SIZE,
                             onChange: this.jumpToPage,

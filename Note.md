@@ -71,3 +71,8 @@
 7. ### 权限管理
     - 通过控制用户能否看到某些标签来鉴权，如果用户的role数组中含有menulist的某个key，就说明，拥有该权限
     - 数组的indexOf方法 arr.indexOf(element),返回元素所在的下标，没有就返回-1（有些遗忘）
+
+8. ### 3个bug
+    - 角色管理的radio选不中的问题 通过配置rowSelection的onSelect属性解决
+    - 商品添加的富文本编辑器，当为点击富文本编辑器输入框，直接提交出现getCurrentContent()库内置函数不是一个函数问题，通过type这个函数，只有当这个属性是函数才调用
+    - 商品搜索，当在非第一页搜索时，页面跳转到第一页，但是分页的page，不改变的情况。通过配置pagination的current来解决

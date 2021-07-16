@@ -148,6 +148,9 @@ export default class Role extends Component {
                     rowSelection={{
                         type: 'radio',
                         selectedRowKeys: [role._id], //标志哪行被选中的属性
+                        onSelect:(role)=>{
+                            this.setState({role})
+                        }
                     }}
                     onRow={this.onRow}
                     bordered

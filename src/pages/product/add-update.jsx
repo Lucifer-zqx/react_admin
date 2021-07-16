@@ -58,6 +58,7 @@ class AddUpdate extends Component {
             if (!err) {
                 //父组件想获取到子组件的状态，可以通过ref调用子组件的方法，来返回子组件的状态数据
                 values.imgs = this.picNode.getImgs()
+                debugger
                 values.detail = this.detailNode.getHTMLText()
                 //收集表单数据
                 const { name, desc, price, detail, imgs, categorys } = values
