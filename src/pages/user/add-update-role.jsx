@@ -12,7 +12,6 @@ class AddUpdateRole extends Component {
 
 
     render() {
-        console.log("子组件")
         const { getFieldDecorator } = this.props.form
         const { roleMenu } = this.props
         const user = this.props.user || {}

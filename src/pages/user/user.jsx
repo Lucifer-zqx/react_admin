@@ -68,7 +68,7 @@ export default class User extends Component {
                 //收集数据,就是表单数据
                 //发送请求
                 let result
-                if (this.user._id) {
+                if (this.user) {
                     values._id=this.user._id
                     result = await reqUpdateUser(values)
                 } else {
@@ -131,14 +131,9 @@ export default class User extends Component {
 
     componentDidMount() {
         this.getUsers()
-        console.log('父组件完成挂载')
     }
 
-
-
     render() {
-        console.log('父组件')
-
         const { users, visible } = this.state
         return (
             <Card title={
