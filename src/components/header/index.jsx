@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Modal } from 'antd'
+import {connect} from "react-redux"
 import './index.less'
 import LinkButton from '../link-button'
 import memoryUtils from "../../utils/memoryUtils"
@@ -8,7 +9,6 @@ import storageUtils from "../../utils/storageUtils"
 import { reqWeather } from '../../api/ajax'
 import tansformDate from '../../utils/dateUtils'
 import menuConfig from "../../config"
-
 class ContentHeader extends Component {
     state = {
         currentTime: tansformDate(Date.now()),
@@ -70,7 +70,8 @@ class ContentHeader extends Component {
     }
 
     render() {
-        const title = this.getTitle()
+        // const title = this.getTitle()
+        const title = this.props.titleState
         return (
             <div className="content-header">
                 <div className="content-header-top">
@@ -92,4 +93,7 @@ class ContentHeader extends Component {
         )
     }
 }
-export default withRouter(ContentHeader)
+export default connect(
+    state => ({titleState:state.setHeadTitle}),
+    {}
+)(withRouter(ContentHeader))

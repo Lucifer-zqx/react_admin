@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Menu, Icon } from 'antd'
+import {connect} from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import logo from "../../assets/imgs/logo.png"
 import './index.less'
 import menulist from '../../config'
 import memoryUtils from '../../utils/memoryUtils'
-
+import {setHeadTitle} from '../../redux/actions'
 
 const { SubMenu } = Menu;
 
@@ -18,9 +19,15 @@ class LeftNav extends Component {
             if(this.hasAuthor(item)){
                 if (!item.children) {
                     
+
+                    //保持刷新后重新保持状态
+                    if(item.key === path || path.indexOf(item.key) !== -1){
+                        this.props.setHeadTitle(item.title)
+                    }
+                    
                         return (
                             <Menu.Item key={item.key}>
-                                <Link to={item.key}>
+                                <Link to={item.key} onClick={()=>this.setTitle(item.title)}>
                                     <Icon type={item.icon} />
                                     <span>{item.title}</span>
                                 </Link>
@@ -54,6 +61,9 @@ class LeftNav extends Component {
         })
     }
 
+    setTitle = (title)=>{
+        this.props.setHeadTitle(title)
+    }
     //鉴权函数
     hasAuthor = item => {
         const { role, username } = memoryUtils.user
@@ -116,4 +126,7 @@ class LeftNav extends Component {
     }
 }
 
-export default withRouter(LeftNav)
+export default connect(
+    state => ({}),
+    {setHeadTitle} 
+)(withRouter(LeftNav))

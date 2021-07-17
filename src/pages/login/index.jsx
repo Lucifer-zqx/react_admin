@@ -26,7 +26,7 @@ class Login extends React.Component {
                     memoryUtils.user = user 
                     //存储到localstorage
                     storageUtils.saveUser(user)
-                    this.props.history.replace('/')
+                    this.props.history.replace('/home')
                 } else {
                     message.success(result.msg)
                 }
