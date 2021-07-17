@@ -4,9 +4,9 @@ import { reqRoles, reqAddRole ,reqUpdateAuthority} from '../../api/ajax'
 import { PAGE_SIZE } from '../../utils/constant'
 import AddRole from './add-role'
 import UpdateRole from './update-role'
-import memoryUtils from '../../utils/memoryUtils'
 import dateUtils from '../../utils/dateUtils'
-export default class Role extends Component {
+import { connect } from 'react-redux'
+ class Role extends Component {
 
     state = {
         roles: [],
@@ -88,7 +88,7 @@ export default class Role extends Component {
         const {role} = this.state
         role.menus = menus
         role.auth_time = Date.now()
-        role.auth_name = memoryUtils.user.username
+        role.auth_name = this.props.user.username
         //发请求
         const result = await reqUpdateAuthority(role)
         if(result.status === 0){
@@ -181,3 +181,7 @@ export default class Role extends Component {
         )
     }
 }
+
+export default connect(
+    state => ({user:state.user})
+)(Role)

@@ -1,11 +1,9 @@
 import React from 'react'
-
 import { Form, Icon, Input, Button, message } from 'antd';
 import { Redirect } from 'react-router-dom';
+import {connect} from 'react-redux'
+import {login} from '../../redux/actions'
 import './index.less'
-import { reqLogin } from "../../api/ajax"
-import memoryUtils from '../../utils/memoryUtils';
-import storageUtils from '../../utils/storageUtils';
 //react 导入图片的格式
 import logo from '../../assets/imgs/logo.png'
 
@@ -17,19 +15,7 @@ class Login extends React.Component {
         this.props.form.validateFields(async (err, values) => {
             const { username, password } = values
             if (!err) {
-                const result = await reqLogin(username, password)
-                if (result.status === 0) {
-                    message.success("登陆成功")
-
-                    //将用户信息存储到内存中
-                    const user = result.data
-                    memoryUtils.user = user 
-                    //存储到localstorage
-                    storageUtils.saveUser(user)
-                    this.props.history.replace('/home')
-                } else {
-                    message.success(result.msg)
-                }
+                this.props.login(username,password)
             } else {
                 message.error("登录失败")
             }
@@ -50,7 +36,7 @@ class Login extends React.Component {
 
     render() {
         //如果已经登录强制在home主页面
-        const user = memoryUtils.user
+        const user = this.props.user
         if (user._id) {
             return <Redirect to="/" />
         }
@@ -105,4 +91,7 @@ class Login extends React.Component {
 
 const WrapLogin = Form.create({})(Login);
 
-export default WrapLogin
+export default connect(
+    state => ({user:state.user}),
+    {login}
+)(WrapLogin)

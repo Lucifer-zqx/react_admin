@@ -5,7 +5,6 @@ import { Link, withRouter } from 'react-router-dom'
 import logo from "../../assets/imgs/logo.png"
 import './index.less'
 import menulist from '../../config'
-import memoryUtils from '../../utils/memoryUtils'
 import {setHeadTitle} from '../../redux/actions'
 
 const { SubMenu } = Menu;
@@ -66,7 +65,7 @@ class LeftNav extends Component {
     }
     //鉴权函数
     hasAuthor = item => {
-        const { role, username } = memoryUtils.user
+        const { role, username } = this.props.user
         const menus = role.menus
         //1.如果用户名为admin那么拥有全部权限
         //2.如果是有公用页面标志，直接获取该页面权限
@@ -127,6 +126,6 @@ class LeftNav extends Component {
 }
 
 export default connect(
-    state => ({}),
+    state => ({user:state.user}),
     {setHeadTitle} 
 )(withRouter(LeftNav))

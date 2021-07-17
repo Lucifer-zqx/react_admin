@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Modal } from 'antd'
 import {connect} from "react-redux"
+import {logout} from '../../redux/actions'
 import './index.less'
 import LinkButton from '../link-button'
-import memoryUtils from "../../utils/memoryUtils"
-import storageUtils from "../../utils/storageUtils"
 import { reqWeather } from '../../api/ajax'
 import tansformDate from '../../utils/dateUtils'
 import menuConfig from "../../config"
@@ -49,9 +48,8 @@ class ContentHeader extends Component {
 
             content: '确认退出吗？',
             onOk: () => {
-                storageUtils.deleteUser()
-                memoryUtils.user = {}
-                this.props.history.replace('/login')
+                //TODO
+                this.props.logout()
             }
 
         })
@@ -75,7 +73,7 @@ class ContentHeader extends Component {
         return (
             <div className="content-header">
                 <div className="content-header-top">
-                    <span>欢迎 {memoryUtils.user.username}</span>
+                    <span>欢迎 {this.props.user.username}</span>
                     <LinkButton onClick={this.logout} >退出</LinkButton>
                 </div>
                 <div className="content-header-bottom">
@@ -94,6 +92,6 @@ class ContentHeader extends Component {
     }
 }
 export default connect(
-    state => ({titleState:state.setHeadTitle}),
-    {}
+    state => ({titleState:state.setHeadTitle,user:state.user}),
+    {logout}
 )(withRouter(ContentHeader))
