@@ -16,6 +16,7 @@ class Login extends React.Component {
             const { username, password } = values
             if (!err) {
                 this.props.login(username,password)
+                this.props.history.replace('/home')
             } else {
                 message.error("登录失败")
             }

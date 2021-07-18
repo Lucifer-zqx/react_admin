@@ -23,8 +23,9 @@ const { Footer, Sider, Content } = Layout
         
         const storeUser = this.props.user
         if(!storeUser._id){
-            this.props.history.replace('/login')
-            return
+            //这里如果不返回一个jsx语句，报render null异常
+            //若果不写return程序就会继续往下执行，在left-nav读取用户的角色时会报undefined异常，可以使用错误边界
+            return <Redirect to='/login'/>
         }
         
         return (
