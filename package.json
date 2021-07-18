@@ -11,6 +11,8 @@
     "craco": "^0.0.3",
     "craco-antd": "^1.19.0",
     "draftjs-to-html": "^0.9.1",
+    "echarts": "^5.1.2",
+    "echarts-for-react": "^3.0.1",
     "jsonp": "^0.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
