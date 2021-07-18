@@ -76,3 +76,25 @@
     - 角色管理的radio选不中的问题 通过配置rowSelection的onSelect属性解决
     - 商品添加的富文本编辑器，当为点击富文本编辑器输入框，直接提交出现getCurrentContent()库内置函数不是一个函数问题，通过type这个函数，只有当这个属性是函数才调用
     - 商品搜索，当在非第一页搜索时，页面跳转到第一页，但是分页的page，不改变的情况。通过配置pagination的current来解决
+
+9. ### 引入redux管理状态
+    - redux三个重要概念：store action reducer
+    - store负责管理状态通过dispatch()将生成好的action发送给reduce人，reducer对其进项处理后，返回新的状态。通过getState()拿到新的对象，当状态发生改变时触发subscribe的回调。action_creator是一个对象：有两个重要属性：type和data。
+    - react-redux是简化redux的官方库，通过redux的Provider组件讲store传递，需要store的组件会自动拿到store对象。并且不需要在对状态写subscribe(),当组件状态发生改变时，会自动重新渲染
+    - action_creator是同步的，要想进行异步操作，需要引入react-thunk，在由redux的applyMiddleware包装后，传入store的核心方法creatStore的第二个参数，调用redux-devtools-extension时，在包装一层这个参数。
+    - react-redux主要思想，把组件分为容器组件和UI组件。UI组件负责页面渲染，容器组件负责通信。关键函数connenct（）（）
+    - connent的第一个参数分为mapStateToProps(将管理的状态映射到UI组件的属性，通过这个参数拿到redux容器的state),mapDispatchProps(将操作生成action的方法给UI组件，通过这个函数生成对应action),
+    - 有多个reducer是需要引入combineReducers(),此时state中不在是，单个状态，而是对个状态组合而成的对象，对象的属性名就是combineReducers返回的对象属性名。
+
+10. ### 项目打包上线
+    - 无跨域：yarn run build后的build文件夹内容放在服务器的public文件下，直接上线运行
+    - 有跨域：使用nginx反向代理服务器。配置好代理，静态资源地址，以及后台资源的地址。
+    - nginx.conf文件主要配置：
+    (```)
+    location / {
+        proxy_pass http://localhost:port;
+    }
+    (```)
+
+    - 当使用跨域上线时，BrowserRouter的问题，访问路径例如：http://localhost:5000/home;端口号后面的资源默认走后端服务器资源，需要对后端服务器进行配置。使请求的路由路径走静态资源
+    - 使用HashRouter可以解决上述问题，因为#后面的内容浏览器认为时静态资源，直接请求，不会走服务器。
